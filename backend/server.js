@@ -14,21 +14,38 @@ app.use(cors());
 app.use(express.json());
 
 const mongoURI = process.env.MONGODB_URI; // Ensure your .env has this
-
 let isConnected = false; // Flag to track connection
 
 const connectDB = async () => {
     if (isConnected) {
+        console.log("MongoDB is already connected.");
         return; // Prevent multiple connections
     }
+
     try {
-        await mongoose.connect(mongoURI);
-        isConnected = true; // Set flag to true
+        await mongoose.connect(mongoURI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+            serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
+            socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+        });
+
+        isConnected = true; // Set flag to true after successful connection
         console.log('MongoDB connected successfully');
     } catch (error) {
         console.error('MongoDB connection error:', error);
+        isConnected = false; // Reset flag if connection fails
+        // Optionally, you can retry connection logic here if needed
     }
 };
+
+// Listen for connection events
+mongoose.connection.on('disconnected', () => {
+    console.warn('MongoDB disconnected. Attempting to reconnect...');
+    isConnected = false;
+    connectDB(); // Attempt to reconnect
+});
+
 
 connectDB();
 
