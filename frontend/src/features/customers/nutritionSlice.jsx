@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 // API Base URL
-const API_URL = 'http://localhost:5000/api/nutrition';
+const API_URL = 'https://gymfuel-project-2.onrender.com/api/nutrition';
 
 // Thunks for CRUD operations
 export const fetchNutrition = createAsyncThunk('nutrition/fetch', async () => {

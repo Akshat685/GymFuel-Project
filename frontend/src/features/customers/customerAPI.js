@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/customers';
+const API_URL = 'https://gymfuel-project-2.onrender.com/api/customers';
 
 export const fetchCustomers = async () => {
   const response = await axios.get(API_URL);

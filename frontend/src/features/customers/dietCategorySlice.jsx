@@ -6,7 +6,7 @@ export const fetchDietCategories = createAsyncThunk(
   'dietCategories/fetchDietCategories',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get('http://localhost:5000/api/dietcategory');
+      const response = await axios.get('https://gymfuel-project-2.onrender.com/api/dietcategory');
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -19,7 +19,7 @@ export const addCategory = createAsyncThunk(
   'dietCategories/addCategory',
   async (category, { rejectWithValue }) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/dietcategory', category);
+      const response = await axios.post('https://gymfuel-project-2.onrender.com/api/dietcategory', category);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -32,7 +32,7 @@ export const updateCategory = createAsyncThunk(
   'dietCategories/updateCategory',
   async ({ id, updatedCategory }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`http://localhost:5000/api/dietcategory/${id}`, updatedCategory);
+      const response = await axios.put(`https://gymfuel-project-2.onrender.com/api/dietcategory/${id}`, updatedCategory);
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response.data);
@@ -45,7 +45,7 @@ export const deleteCategory = createAsyncThunk(
   'dietCategories/deleteCategory',
   async (id, { rejectWithValue }) => {
     try {
-      await axios.delete(`http://localhost:5000/api/dietcategory/${id}`);
+      await axios.delete(`https://gymfuel-project-2.onrender.com/api/dietcategory/${id}`);
       return id;
     } catch (error) {
       return rejectWithValue(error.response.data);

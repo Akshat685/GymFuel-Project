@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api/customers';
+const API_URL = 'https://gymfuel-project-2.onrender.com/api/customers';
 
 // Async thunks for CRUD operations
 export const fetchCustomers = createAsyncThunk('customers/fetchAll', async () => {

@@ -4,19 +4,19 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const fetchDiets = createAsyncThunk("diets/fetchDiets", async () => {
-    const response = await axios.get("http://localhost:5000/api/diets");
+    const response = await axios.get("https://gymfuel-project-2.onrender.com/api/diets");
     return response.data;
 });
 
 export const createDiet = createAsyncThunk("diets/createDiet", async (newDiet) => {
-    const response = await axios.post("http://localhost:5000/api/diets", newDiet);
+    const response = await axios.post("https://gymfuel-project-2.onrender.com/api/diets", newDiet);
     return response.data;
 });
 
 export const updateDiet = createAsyncThunk("diets/updateDiet", async (diet) => {
     const { _id, mealType, foodItem, servingSize, calories, protein, carbs, fats, fiber, notes, category } = diet;
 
-    const response = await axios.put(`http://localhost:5000/api/diets/${_id}`, {
+    const response = await axios.put(`https://gymfuel-project-2.onrender.com/api/diets/${_id}`, {
         mealType,
         foodItem,
         servingSize,
@@ -33,7 +33,7 @@ export const updateDiet = createAsyncThunk("diets/updateDiet", async (diet) => {
 });
 
 export const deleteDiet = createAsyncThunk("diets/deleteDiet", async (id) => {
-    await axios.delete(`http://localhost:5000/api/diets/${id}`);
+    await axios.delete(`https://gymfuel-project-2.onrender.com/api/diets/${id}`);
     return id;
 });
 

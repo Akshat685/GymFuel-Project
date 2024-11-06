@@ -8,7 +8,7 @@ export const login = createAsyncThunk(
   "auth/login",
   async ({ email, password }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", { email, password });
+      const response = await axios.post("https://gymfuel-project-2.onrender.com/api/auth/login", { email, password });
       return {
         token: response.data.token,
         username: response.data.username, // Ensure this is returned
@@ -25,7 +25,7 @@ export const signup = createAsyncThunk(
   "auth/signup",
   async ({ name, email, password }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/signup", { name, email, password });
+      const response = await axios.post("https://gymfuel-project-2.onrender.com/api/auth/signup", { name, email, password });
       return {
         username: response.data.username, // Ensure this is returned
         email: response.data.email // Ensure this is returned

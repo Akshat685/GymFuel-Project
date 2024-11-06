@@ -38,7 +38,7 @@ const DietCategory = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/dietcategory');
+            const response = await axios.get('https://gymfuel-project-2.onrender.com/api/dietcategory');
             setCategories(response.data);
         } catch (error) {
             console.error('Error fetching categories:', error);
@@ -52,7 +52,7 @@ const DietCategory = () => {
 
     const handleAddCategory = async () => {
         try {
-            await axios.post('http://localhost:5000/api/dietcategory', {
+            await axios.post('https://gymfuel-project-2.onrender.com/api/dietcategory', {
                 name: form.name,
                 description: form.description,
             });
@@ -72,7 +72,7 @@ const DietCategory = () => {
 
     const handleEditCategory = async () => {
         try {
-            await axios.put(`http://localhost:5000/api/dietcategory/${form.id}`, {
+            await axios.put(`https://gymfuel-project-2.onrender.com/api/dietcategory/${form.id}`, {
                 name: form.name,
                 description: form.description,
             });
@@ -93,7 +93,7 @@ const DietCategory = () => {
 
     const handleDeleteCategory = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/dietcategory/${id}`);
+            await axios.delete(`https://gymfuel-project-2.onrender.com/api/dietcategory/${id}`);
             fetchCategories();
             toast.success('Category deleted successfully.');
         } catch (error) {
