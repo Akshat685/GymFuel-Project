@@ -1,0 +1,16 @@
+.navbar {
+    background-color: #fff; /* Navbar background */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Shadow effect */
+  }
+  
+  .navbar-logo {
+    height: 40px; /* Adjust logo size */
+    margin-right: 15px; /* Space between logo and title */
+  }
+  
+  /* Add responsive styles */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column; /* Stack items on smaller screens */
+    }
+  }

@@ -1,0 +1,11 @@
+==for how many period of time he needs to diet plan he needs
+
+== while in dropdown selecting customer it shows the how much protein he needs
+
+== for how many months he needs to do diet 
+
+== make that he puts his height weight that shows how much protein hr need and show his bmi 
+
+== how much calories he needs to take fot to gain 5 kg weight
+
+==
