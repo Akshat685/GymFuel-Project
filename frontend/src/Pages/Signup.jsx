@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import gymFuelCover from "../images/GymFuel_background.png"; // Adjust the path if necessary
+import {  toast } from 'react-toastify'; // Import ToastContainer and toast
+import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
 const SignUp = () => {
   const [username, setUsername] = useState("");
@@ -37,6 +39,7 @@ const SignUp = () => {
       const data = await response.json();
 
       if (response.ok) {
+        toast.success("Registration successful!"); // Show success toast
         navigate("/"); // Redirect to sign-in or any other route after successful signup
       } else {
         setError(data.message);

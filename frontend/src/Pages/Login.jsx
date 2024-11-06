@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../redux/authSlice"; // Adjust the import based on your file structure
+import {  toast } from 'react-toastify'; // Import ToastContainer and toast
+import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,6 +22,8 @@ const Login = () => {
     if (login.fulfilled.match(resultAction)) {
       localStorage.setItem("token", resultAction.payload.token); // Store token
       localStorage.setItem("email", resultAction.payload.email); // Store email
+      toast.success("Login successful! Welcome back!"); // Show success toast
+
       navigate("/dashboard"); // Redirect to profile after login
     } else {
       console.error(resultAction.payload); // Log any errors
