@@ -221,7 +221,11 @@ const Diet = () => {
                         <Card
                             className="text-center cursor-pointer category-card"
                             onClick={() => handleCategoryClick(category.name)}
-                            style={{ display: isTableVisible ? 'none' : 'block' }}
+                            style={{
+                                display: isTableVisible ? 'none' : 'block',
+                                boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)', // Increase shadow size and opacity
+                                transition: 'box-shadow 0.3s ease' // Optional: for smooth transition
+                            }}
                         >
                             <Card.Body>
                                 <Card.Title>{category.name}</Card.Title>
@@ -247,17 +251,17 @@ const Diet = () => {
                         <Table striped bordered hover responsive className="mt-4">
                             <thead className="table-light">
                                 <tr>
-                                <th style={{ backgroundColor: '#344767', color: 'white' }}>No.</th>
-<th style={{ backgroundColor: '#344767', color: 'white' }}>Meal Type</th>
-<th style={{ backgroundColor: '#344767', color: 'white' }}>Food Item</th>
-<th style={{ backgroundColor: '#344767', color: 'white' }}>Serving Size</th>
-<th style={{ backgroundColor: '#344767', color: 'white' }}>Calories</th>
-<th style={{ backgroundColor: '#344767', color: 'white' }}>Protein (g)</th>
-<th style={{ backgroundColor: '#344767', color: 'white' }}>Carbs (g)</th>
-<th style={{ backgroundColor: '#344767', color: 'white' }}>Fats (g)</th>
-<th style={{ backgroundColor: '#344767', color: 'white' }}>Fiber (g)</th>
-<th style={{ backgroundColor: '#344767', color: 'white' }}>Notes</th>
-<th style={{ backgroundColor: '#344767', color: 'white' }}>Actions</th>
+                                    <th style={{ backgroundColor: '#344767', color: 'white' }}>No.</th>
+                                    <th style={{ backgroundColor: '#344767', color: 'white' }}>Meal Type</th>
+                                    <th style={{ backgroundColor: '#344767', color: 'white' }}>Food Item</th>
+                                    <th style={{ backgroundColor: '#344767', color: 'white' }}>Serving Size</th>
+                                    <th style={{ backgroundColor: '#344767', color: 'white' }}>Calories</th>
+                                    <th style={{ backgroundColor: '#344767', color: 'white' }}>Protein (g)</th>
+                                    <th style={{ backgroundColor: '#344767', color: 'white' }}>Carbs (g)</th>
+                                    <th style={{ backgroundColor: '#344767', color: 'white' }}>Fats (g)</th>
+                                    <th style={{ backgroundColor: '#344767', color: 'white' }}>Fiber (g)</th>
+                                    <th style={{ backgroundColor: '#344767', color: 'white' }}>Notes</th>
+                                    <th style={{ backgroundColor: '#344767', color: 'white' }}>Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="table-group-divider">
@@ -584,7 +588,7 @@ const Diet = () => {
                         <Button variant="primary" className="btn-gradient-primary" onClick={handleCreate}>
                             <i className="bi bi-save-fill me-1"></i> Save Meal
                         </Button>
-                                </div>
+                    </div>
                 </Modal.Footer>
             </Modal>
 

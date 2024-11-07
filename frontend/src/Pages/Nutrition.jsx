@@ -37,7 +37,7 @@ const Nutrition = () => {
     sugar: '',
     foodType: ''
   };
-  
+
   const [formData, setFormData] = useState(initialFormData);
   const [editOpen, setEditOpen] = useState(false);
   const [selectedNutrition, setSelectedNutrition] = useState({ ...formData });
@@ -45,7 +45,7 @@ const Nutrition = () => {
   const [nutritionToDelete, setNutritionToDelete] = useState(null);
   const [openAddModal, setOpenAddModal] = useState(false);
 
-  
+
 
   useEffect(() => {
     dispatch(fetchNutrition());
@@ -158,183 +158,190 @@ const Nutrition = () => {
   return (
     <div style={{ width: '1250px !important', margin: '0 auto' }}>
 
-    <Container>
-      <AppBar position="static" sx={{ background: 'linear-gradient(90deg, rgba(25, 118, 210, 1) 0%, rgba(0, 150, 136, 1) 100%)', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
-        <Toolbar>
-          <Typography variant="h5" color="inherit" sx={{ flexGrow: 1, fontWeight: 'bold', letterSpacing: '1px' }}>
-            Nutrition Item List
-          </Typography>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={handleOpenAddModal}
-            sx={{
-              backgroundColor: '#4CAF50', // Set the background color to green
-              
-            }}
-          >
-            Add Nutrition
-          </Button>
-        </Toolbar>
-      </AppBar>
-      {/* view  */}
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Grid container spacing={2} sx={{ marginTop: 2 }}>
-              {items.map((item) => (
-                <Grid item xs={12} sm={6} md={4} key={item._id}>
-                  <Card elevation={3} sx={{ padding: 2, borderRadius: 10, boxShadow: '0px 0px 10px rgba(0,0,0,0.1)' }}>
-                    <CardContent sx={{ padding: 2 }}>
-                      <Typography variant="h5" fontWeight="bold" sx={{ marginBottom: 1, color: '#333' }}>
-                        {item.foodItem} {/* Food Item Heading */}
-                      </Typography>
+      <Container>
+        <AppBar position="static" sx={{ background: 'linear-gradient(90deg, rgba(25, 118, 210, 1) 0%, rgba(0, 150, 136, 1) 100%)', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)' }}>
+          <Toolbar>
+            <Typography variant="h5" color="inherit" sx={{ flexGrow: 1, fontWeight: 'bold', letterSpacing: '1px' }}>
+              Nutrition Item List
+            </Typography>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={handleOpenAddModal}
+              sx={{
+                backgroundColor: '#4CAF50', // Set the background color to green
 
-                      <Grid container spacing={1}>
-                        <Grid item xs={12} sm={6}>
-                          <Typography sx={{ fontSize: 14, color: '#666' }}>
-                            <span style={{ fontWeight: 'bold' }}>Category:</span> {item.category}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Typography sx={{ fontSize: 14, color: '#666' }}>
-                            <span style={{ fontWeight: 'bold' }}>Food Type:</span> {item.foodType}
-                          </Typography>
-                        </Grid>
+              }}
+            >
+              Add Nutrition
+            </Button>
+          </Toolbar>
+        </AppBar>
+        {/* view  */}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Grid container spacing={2} sx={{ marginTop: 2 }}>
+                {items.map((item) => (
+                  <Grid item xs={12} sm={6} md={4} key={item._id}>
+                    <Card
+                      elevation={3}
+                      sx={{
+                        padding: 2,
+                        borderRadius: 10,
+                        boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.2)' // Increased box shadow
+                      }}
+                    >
+                      <CardContent sx={{ padding: 2 }}>
+                        <Typography variant="h5" fontWeight="bold" sx={{ marginBottom: 1, color: '#333' }}>
+                          {item.foodItem} {/* Food Item Heading */}
+                        </Typography>
 
-                        <Grid item xs={12} sm={6}>
-                          <Typography sx={{ fontSize: 14, color: '#666' }}>
-                            <span style={{ fontWeight: 'bold' }}>Nutrition Facts:</span>
-                          </Typography>
-                        </Grid>
+                        <Grid container spacing={1}>
+                          <Grid item xs={12} sm={6}>
+                            <Typography sx={{ fontSize: 14, color: '#666' }}>
+                              <span style={{ fontWeight: 'bold' }}>Category:</span> {item.category}
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <Typography sx={{ fontSize: 14, color: '#666' }}>
+                              <span style={{ fontWeight: 'bold' }}>Food Type:</span> {item.foodType}
+                            </Typography>
+                          </Grid>
 
-                        <Grid item xs={12} sm={6}>
-                          <Typography sx={{ fontSize: 14, color: '#666' }}>
-                            <span style={{ fontWeight: 'bold' }}>Protein:</span> {item.protein} g
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Typography sx={{ fontSize: 14, color: '#666' }}>
-                            <span style={{ fontWeight: 'bold' }}>Carbs:</span> {item.carbs} g
-                          </Typography>
-                        </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <Typography sx={{ fontSize: 14, color: '#666' }}>
+                              <span style={{ fontWeight: 'bold' }}>Nutrition Facts:</span>
+                            </Typography>
+                          </Grid>
 
-                        <Grid item xs={12} sm={6}>
-                          <Typography sx={{ fontSize: 14, color: '#666' }}>
-                            <span style={{ fontWeight: 'bold' }}>Fats:</span> {item.fats} g
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Typography sx={{ fontSize: 14, color: '#666' }}>
-                            <span style={{ fontWeight: 'bold' }}>Calories:</span> {item.calories}
-                          </Typography>
-                        </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <Typography sx={{ fontSize: 14, color: '#666' }}>
+                              <span style={{ fontWeight: 'bold' }}>Protein:</span> {item.protein} g
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <Typography sx={{ fontSize: 14, color: '#666' }}>
+                              <span style={{ fontWeight: 'bold' }}>Carbs:</span> {item.carbs} g
+                            </Typography>
+                          </Grid>
 
-                        <Grid item xs={12} sm={6}>
-                          <Typography sx={{ fontSize: 14, color: '#666' }}>
-                            <span style={{ fontWeight: 'bold' }}>Serving Size:</span> {item.servingSize}
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Typography sx={{ fontSize: 14, color: '#666' }}>
-                            <span style={{ fontWeight: 'bold' }}>Fiber:</span> {item.fiber} g
-                          </Typography>
-                        </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <Typography sx={{ fontSize: 14, color: '#666' }}>
+                              <span style={{ fontWeight: 'bold' }}>Fats:</span> {item.fats} g
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <Typography sx={{ fontSize: 14, color: '#666' }}>
+                              <span style={{ fontWeight: 'bold' }}>Calories:</span> {item.calories}
+                            </Typography>
+                          </Grid>
 
-                        <Grid item xs={12} sm={6}>
-                          <Typography sx={{ fontSize: 14, color: '#666' }}>
-                            <span style={{ fontWeight: 'bold' }}>Sugar:</span> {item.sugar} g
-                          </Typography>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                          <Typography sx={{ fontSize: 14, color: '#666' }}>
-                            <span style={{ fontWeight: 'bold' }}>Dietary Restrictions:</span> {item.dietaryRestrictions.join(', ') || 'None'}
-                          </Typography>
-                        </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <Typography sx={{ fontSize: 14, color: '#666' }}>
+                              <span style={{ fontWeight: 'bold' }}>Serving Size:</span> {item.servingSize}
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <Typography sx={{ fontSize: 14, color: '#666' }}>
+                              <span style={{ fontWeight: 'bold' }}>Fiber:</span> {item.fiber} g
+                            </Typography>
+                          </Grid>
 
-                        <Grid item xs={12} sm={6}>
-                          <Typography sx={{ fontSize: 14, color: '#666' }}>
-                            <span style={{ fontWeight: 'bold' }}>Micronutrients:</span>
-                            {`Calcium: ${item.micronutrients?.calcium || 'N/A'} mg, 
+                          <Grid item xs={12} sm={6}>
+                            <Typography sx={{ fontSize: 14, color: '#666' }}>
+                              <span style={{ fontWeight: 'bold' }}>Sugar:</span> {item.sugar} g
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12} sm={6}>
+                            <Typography sx={{ fontSize: 14, color: '#666' }}>
+                              <span style={{ fontWeight: 'bold' }}>Dietary Restrictions:</span> {item.dietaryRestrictions.join(', ') || 'None'}
+                            </Typography>
+                          </Grid>
+
+                          <Grid item xs={12} sm={6}>
+                            <Typography sx={{ fontSize: 14, color: '#666' }}>
+                              <span style={{ fontWeight: 'bold' }}>Micronutrients:</span>
+                              {`Calcium: ${item.micronutrients?.calcium || 'N/A'} mg, 
     Iron: ${item.micronutrients?.iron || 'N/A'} mg`}
-                          </Typography>
+                            </Typography>
+                          </Grid>
                         </Grid>
-                      </Grid>
 
-                      <CardActions sx={{ justifyContent: 'flex-end', padding: 1 }}>
-                        <IconButton size="small" onClick={() => handleEditOpen(item)}>
-                          <EditIcon color="primary" />
-                        </IconButton>
-                        <IconButton size="small" color="error" onClick={() => handleDeleteConfirmation(item._id)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </CardActions>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-          }
+                        <CardActions sx={{ justifyContent: 'flex-end', padding: 1 }}>
+                          <IconButton size="small" onClick={() => handleEditOpen(item)}>
+                            <EditIcon color="primary" />
+                          </IconButton>
+                          <IconButton size="small" color="error" onClick={() => handleDeleteConfirmation(item._id)}>
+                            <DeleteIcon />
+                          </IconButton>
+                        </CardActions>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            }
+          />
+
+
+
+        </Routes>
+
+
+
+        <AddNutrition
+          open={openAddModal}
+
+          handleClose={() => {
+            setOpenAddModal(false);
+            toast.info('Add Nutrition canceled.'); // Show cancel toast here
+          }}
+          formData={formData}
+          handleChange={handleChange}
+          handleAddNutrition={handleAddNutrition}
+          handleCancel={handleCancel}
+        />
+
+        <EditNutrition
+          open={editOpen}
+          handleClose={() => {
+            setEditOpen(false);
+            toast.info('Edit canceled.'); // Show cancel toast here
+          }}
+
+          formData={selectedNutrition}
+          setFormData={setSelectedNutrition}
+          handleChange={(e) => {
+            const { name, value } = e.target;
+            setSelectedNutrition((prevData) => ({
+              ...prevData,
+              [name]: value,
+            }));
+          }}
+          handleEditNutrition={handleEditNutrition}
         />
 
 
+        <Dialog open={openDialog} onClose={handleCancelDelete}>
+          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this Nutrition data?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCancelDelete} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleDelete} color="error">
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-      </Routes>
-
-
-
-      <AddNutrition
-        open={openAddModal}
-        
-         handleClose={() => {
-          setOpenAddModal(false);
-          toast.info('Add Nutrition canceled.'); // Show cancel toast here
-        }}
-        formData={formData}
-        handleChange={handleChange}
-        handleAddNutrition={handleAddNutrition}
-        handleCancel={handleCancel}
-      />
-
-      <EditNutrition
-        open={editOpen}
-        handleClose={() => {
-          setEditOpen(false);
-          toast.info('Edit canceled.'); // Show cancel toast here
-        }}
-
-        formData={selectedNutrition}
-        setFormData={setSelectedNutrition}
-        handleChange={(e) => {
-          const { name, value } = e.target;
-          setSelectedNutrition((prevData) => ({
-            ...prevData,
-            [name]: value,
-          }));
-        }}
-        handleEditNutrition={handleEditNutrition}
-      />
-
-
-      <Dialog open={openDialog} onClose={handleCancelDelete}>
-        <DialogTitle>Confirm Delete</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to delete this Nutrition data?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCancelDelete} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleDelete} color="error">
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-    </Container>
+      </Container>
     </div>
   );
 }
