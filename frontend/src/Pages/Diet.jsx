@@ -218,13 +218,22 @@ const Diet = () => {
             <Row className="justify-content-center">
                 {categories.map((category) => (
                     <Col xs={12} sm={4} key={category._id} className="mb-4">
-                        <Card
+                          <Card
                             className="text-center cursor-pointer category-card"
                             onClick={() => handleCategoryClick(category.name)}
                             style={{
                                 display: isTableVisible ? 'none' : 'block',
-                                boxShadow: '0 8px 16px rgba(0, 0, 0, 0.3)', // Increase shadow size and opacity
-                                transition: 'box-shadow 0.3s ease' // Optional: for smooth transition
+                                boxShadow: '0 4px 10px rgba(0, 0, 0, 0.2), 0 8px 20px rgba(0, 0, 0, 0.15)', // Multiple shadows for depth
+                                transition: 'box-shadow 0.3s ease, transform 0.3s ease', // Smooth transition for shadow and transform
+                                borderRadius: '10px', // Optional: rounded corners for a softer look
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.transform = 'scale(1.05)'; // Slightly scale up on hover
+                                e.currentTarget.style.boxShadow = '0 8px 20px rgba(0, 0, 0, 0.3), 0 16px 40px rgba(0, 0, 0, 0.25)'; // Deeper shadow on hover
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.transform = 'scale(1)'; // Reset scale on mouse leave
+                                e.currentTarget.style.boxShadow = '0 4px 10px rgba(0, 0, 0, 0.2), 0 8px 20px rgba(0, 0, 0, 0.15)'; // Reset shadow
                             }}
                         >
                             <Card.Body>
