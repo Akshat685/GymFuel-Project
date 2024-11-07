@@ -247,17 +247,17 @@ const Diet = () => {
                         <Table striped bordered hover responsive className="mt-4">
                             <thead className="table-light">
                                 <tr>
-                                    <th>No.</th>
-                                    <th>Meal Type</ th>
-                                    <th>Food Item</th>
-                                    <th>Serving Size</th>
-                                    <th>Calories</th>
-                                    <th>Protein (g)</th>
-                                    <th>Carbs (g)</th>
-                                    <th>Fats (g)</th>
-                                    <th>Fiber (g)</th>
-                                    <th>Notes</th>
-                                    <th>Actions</th>
+                                <th style={{ backgroundColor: '#344767', color: 'white' }}>No.</th>
+<th style={{ backgroundColor: '#344767', color: 'white' }}>Meal Type</th>
+<th style={{ backgroundColor: '#344767', color: 'white' }}>Food Item</th>
+<th style={{ backgroundColor: '#344767', color: 'white' }}>Serving Size</th>
+<th style={{ backgroundColor: '#344767', color: 'white' }}>Calories</th>
+<th style={{ backgroundColor: '#344767', color: 'white' }}>Protein (g)</th>
+<th style={{ backgroundColor: '#344767', color: 'white' }}>Carbs (g)</th>
+<th style={{ backgroundColor: '#344767', color: 'white' }}>Fats (g)</th>
+<th style={{ backgroundColor: '#344767', color: 'white' }}>Fiber (g)</th>
+<th style={{ backgroundColor: '#344767', color: 'white' }}>Notes</th>
+<th style={{ backgroundColor: '#344767', color: 'white' }}>Actions</th>
                                 </tr>
                             </thead>
                             <tbody className="table-group-divider">
