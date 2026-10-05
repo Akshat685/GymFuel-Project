@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import gymFuelCover from "../images/GymFuel_background.png"; // Adjust the path if necessary
-import {  toast } from 'react-toastify'; // Import ToastContainer and toast
+import { toast } from 'react-toastify'; // Import ToastContainer and toast
 import 'react-toastify/dist/ReactToastify.css'; // Import the styles
 
 const SignUp = () => {
@@ -28,7 +28,7 @@ const SignUp = () => {
     if (!validateInputs()) return; // Stop form submission if validation fails
 
     try {
-      const response = await fetch("https://gymfuel-project-2.onrender.com/api/auth/register", {
+      const response = await fetch("/api/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

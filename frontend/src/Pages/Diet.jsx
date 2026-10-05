@@ -74,7 +74,7 @@ const Diet = () => {
 
     const fetchCategories = async () => {
         try {
-            const response = await axios.get('https://gymfuel-project-2.onrender.com/api/dietcategory');
+            const response = await axios.get('/api/dietcategory');
             setCategories(response.data);
         } catch (error) {
             console.error('Error fetching categories:', error);
