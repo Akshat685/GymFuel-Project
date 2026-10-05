@@ -94,6 +94,7 @@ const Dashboard = () => {
         } else {
             resetStates();
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCustomerId, customers]);
 
     // Fetch suggested meals based on protein needs
@@ -116,7 +117,8 @@ const Dashboard = () => {
                 // Iterate over the meal order
                 for (const mealType of mealOrder) {
                     // Find meals of the current type that haven't been selected yet
-                    const availableMeals = maintenanceMeals.filter(meal =>
+                    // eslint-disable-next-line no-loop-func
+                const availableMeals = maintenanceMeals.filter(meal =>
                         meal.mealType === mealType &&
                         !selectedFoodItems.has(meal.foodItem) &&
                         totalProtein < proteinTarget
@@ -169,6 +171,7 @@ const Dashboard = () => {
             // Iterate over the meal order
             for (const mealType of mealOrder) {
                 // Find meals of the current type that haven't been selected yet
+                // eslint-disable-next-line no-loop-func
                 const availableMeals = mealsForGoal.filter(meal =>
                     meal.mealType === mealType &&
                     !selectedFoodItems.has(meal.foodItem) &&
@@ -216,6 +219,7 @@ const Dashboard = () => {
         } else {
             setWeightGoalMeals([]);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [weightGoal, goalType]);
 
     // Handle customer selection

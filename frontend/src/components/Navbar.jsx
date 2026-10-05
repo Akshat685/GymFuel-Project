@@ -29,7 +29,7 @@ const Navbar = () => {
           <nav aria-label="breadcrumb">
             <ol className="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
               <li className="breadcrumb-item text-sm">
-                <a className="opacity-5 text-dark">Pages</a>
+                <a className="opacity-5 text-dark" href="/">Pages</a>
               </li>
               <li className="breadcrumb-item text-sm text-dark active" aria-current="page">
                 {pageTitle} {/* Render dynamic page title */}

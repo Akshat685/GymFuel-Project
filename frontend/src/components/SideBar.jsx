@@ -6,7 +6,7 @@ import '../styles/sidebar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faTachometerAlt, faUsers, faUtensils, faListAlt, faDumbbell,
-  faUser, faBars
+  faBars
 } from '@fortawesome/free-solid-svg-icons';
 
 const Sidebar = () => {
