@@ -23,17 +23,22 @@ const connectDB = async () => {
     }
 
     try {
+        console.log('Attempting MongoDB connection...');
+        console.log('URI starts with:', mongoURI ? mongoURI.substring(0, 20) + '...' : 'UNDEFINED');
+        
         await mongoose.connect(mongoURI, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-            serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
+            serverSelectionTimeoutMS: 10000, // Timeout after 10 seconds
             socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
         });
+
+        // Test the connection with an actual DB operation
+        await mongoose.connection.db.admin().ping();
+        console.log('MongoDB ping successful - connection fully verified');
 
         isConnected = true; // Set flag to true after successful connection
         console.log('MongoDB connected successfully');
     } catch (error) {
-        console.error('MongoDB connection error:', error);
+        console.error('MongoDB connection error:', error.message);
         isConnected = false; // Reset flag if connection fails
         // Optionally, you can retry connection logic here if needed
     }
