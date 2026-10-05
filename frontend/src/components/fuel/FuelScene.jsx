@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Canvas, useThree } from '@react-three/fiber';
-import { CanvasTexture, Object3D, PMREMGenerator, SRGBColorSpace, Vector2 } from 'three';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { CanvasTexture, MathUtils, Object3D, PMREMGenerator, SRGBColorSpace, Vector2 } from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { useGLTF } from '@react-three/drei/core/Gltf';
 import { useAnimations } from '@react-three/drei/core/useAnimations';
@@ -97,13 +97,39 @@ function Lifecycle({ onReady, onFailure }) {
   return null;
 }
 
-export default function FuelScene({ active, onReady, onFailure }) {
+export default function FuelScene({ active, motion, onReady, onFailure }) {
   return <div className="fuel-canvas" aria-hidden="true">
     <Canvas frameloop={active ? 'always' : 'never'} dpr={[1, 1.5]} camera={{ position: [0, .3, 6.4], fov: 36 }} gl={{ alpha: true, antialias: true, powerPreference: 'low-power' }}>
       <StudioLighting />
-      <group rotation={[.1, -.25, -.22]} position={[0, -.08, 0]}>{MODEL_URL ? <ExternalModel active={active} /> : <Shaker />}</group>
+      <MotionRig motion={motion} active={active} />
       <Lifecycle onReady={onReady} onFailure={onFailure} />
     </Canvas>
   </div>;
+}
+
+
+function MotionRig({ motion, active }) {
+  const model = useRef();
+  const reveal = useRef();
+  const elapsed = useRef(0);
+  useFrame(({ camera }, rawDelta) => {
+    const dt = Math.min(rawDelta, .05);
+    elapsed.current += dt;
+    const state = motion.current;
+    if (!state.drag) { state.spin += state.velocity * dt * 60; state.velocity *= Math.exp(-5 * dt); }
+    const damp = (from, to, speed = 4) => MathUtils.damp(from, to, speed, dt);
+    model.current.rotation.x = damp(model.current.rotation.x, .1 + state.y * .11);
+    model.current.rotation.y = damp(model.current.rotation.y, -.25 + state.x * .2 + state.spin);
+    model.current.rotation.z = damp(model.current.rotation.z, -.22 + state.x * .035);
+    model.current.position.y = -.08 + Math.sin(elapsed.current * .8) * .055;
+    camera.position.z = damp(camera.position.z, 6.4 - state.scroll * .4);
+    camera.position.x = damp(camera.position.x, state.x * .1);
+    camera.lookAt(0, .15, 0);
+    reveal.current.position.set(state.x * 2, 1 - state.y * 2, 3);
+    reveal.current.intensity = damp(reveal.current.intensity, state.shine * 6);
+  });
+  return <><pointLight ref={reveal} intensity={0} distance={7} color="#b9d3ff" />
+    <group ref={model} rotation={[.1, -.25, -.22]} position={[0, -.08, 0]}>{MODEL_URL ? <ExternalModel active={active} /> : <Shaker />}</group>
+  </>;
 }
 
