@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { CanvasTexture, MathUtils, Object3D, PMREMGenerator, SRGBColorSpace, Vector2 } from 'three';
-import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
+import { CanvasTexture, CubeUVReflectionMapping, DataTexture, FileLoader, HalfFloatType, LinearFilter, LinearSRGBColorSpace, MathUtils, Object3D, RGBAFormat, SRGBColorSpace, Vector2 } from 'three';
+import studioMap from './studio-map.json';
 import { useGLTF } from '@react-three/drei/core/Gltf';
 import { PerformanceMonitor } from '@react-three/drei/core/PerformanceMonitor';
 import { useAnimations } from '@react-three/drei/core/useAnimations';
@@ -11,20 +11,21 @@ const MODEL_URL = null;
 const BODY_PROFILE = [[0, -1.27], [.48, -1.27], [.59, -1.23], [.63, -1.13], [.72, .84], [.72, .98], [.67, 1.04], [0, 1.04]].map(([x, y]) => new Vector2(x, y));
 
 function StudioLighting() {
-  const { gl, scene } = useThree();
+  const { scene } = useThree();
+  const buffer = useLoader(FileLoader, `${process.env.PUBLIC_URL}/fuel-studio.bin`, loader => loader.setResponseType('arraybuffer'));
   useEffect(() => {
-    const room = new RoomEnvironment();
-    const generator = new PMREMGenerator(gl);
-    const target = generator.fromScene(room, .06, .1, 20, { size: 128 });
-    scene.environment = target.texture;
+    const map = new DataTexture(new Uint16Array(buffer), studioMap.width, studioMap.height, RGBAFormat, HalfFloatType);
+    map.mapping = CubeUVReflectionMapping;
+    map.minFilter = LinearFilter;
+    map.magFilter = LinearFilter;
+    map.colorSpace = LinearSRGBColorSpace;
+    map.needsUpdate = true;
+    scene.environment = map;
     scene.environmentIntensity = .65;
-    room.dispose();
-    generator.dispose();
-    return () => { scene.environment = null; target.dispose(); };
-  }, [gl, scene]);
+    return () => { scene.environment = null; map.dispose(); };
+  }, [buffer, scene]);
   return <><hemisphereLight args={['#f5f8ff', '#243b65', 1.3]} /><directionalLight position={[-3, 4, 5]} intensity={3.5} color="#ffffff" /><directionalLight position={[3, 0, -2]} intensity={2} color="#a8c7ff" /></>;
 }
-
 function BottleLabel() {
   const [texture, setTexture] = useState(null);
   useEffect(() => {
@@ -88,13 +89,17 @@ function ExternalModel({ active }) {
 }
 
 function Lifecycle({ onReady, onFailure }) {
-  const { gl } = useThree();
+  const { gl, scene, camera } = useThree();
   useEffect(() => {
     const lost = event => { event.preventDefault(); onFailure(); };
     gl.domElement.addEventListener('webglcontextlost', lost);
-    onReady();
-    return () => gl.domElement.removeEventListener('webglcontextlost', lost);
-  }, [gl, onReady, onFailure]);
+    let cancelled = false;
+    const compile = gl.extensions.has('KHR_parallel_shader_compile')
+      ? gl.compileAsync(scene, camera)
+      : Promise.resolve().then(() => gl.compile(scene, camera));
+    compile.then(() => { if (!cancelled) onReady(); }).catch(() => { if (!cancelled) onFailure(); });
+    return () => { cancelled = true; gl.domElement.removeEventListener('webglcontextlost', lost); };
+  }, [gl, scene, camera, onReady, onFailure]);
   return null;
 }
 
@@ -123,13 +128,15 @@ function PerformanceProbe() {
 export default function FuelScene({ active, motion, onReady, onFailure }) {
   const mobile = window.matchMedia('(max-width: 700px), (pointer: coarse)').matches;
   const [dpr, setDpr] = useState(mobile ? 1 : 1.25);
+  const [compiled, setCompiled] = useState(false);
+  const ready = useCallback(() => { setCompiled(true); onReady(); }, [onReady]);
   return <div className="fuel-canvas" aria-hidden="true">
-    <Canvas frameloop={active ? 'always' : 'never'} dpr={dpr} camera={{ position: [0, .3, 6.4], fov: 36 }} gl={{ alpha: true, antialias: false, powerPreference: 'low-power' }}>
+    <Canvas frameloop={active && compiled ? 'always' : 'never'} dpr={dpr} camera={{ position: [0, .3, 6.4], fov: 36 }} gl={{ alpha: true, antialias: false, powerPreference: 'low-power' }}>
       <PerformanceMonitor bounds={() => [35, 55]} flipflops={2} onDecline={() => setDpr(1)} onIncline={() => setDpr(mobile ? 1.25 : 1.5)} onFallback={() => setDpr(1)} />
       {process.env.NODE_ENV === 'development' && <PerformanceProbe />}
       <StudioLighting />
       <MotionRig motion={motion} active={active} />
-      <Lifecycle onReady={onReady} onFailure={onFailure} />
+      <Lifecycle onReady={ready} onFailure={onFailure} />
     </Canvas>
   </div>;
 }
@@ -159,7 +166,3 @@ function MotionRig({ motion, active }) {
     <group ref={model} rotation={[.1, -.25, -.22]} position={[0, -.08, 0]}>{MODEL_URL ? <ExternalModel active={active} /> : <Shaker />}</group>
   </>;
 }
-
-
-
-

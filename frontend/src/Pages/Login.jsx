@@ -35,6 +35,7 @@ export default function Login() {
     }
   };
   return <div className="fuel-login">
+    <a className="fuel-skip" href="#fuel-signin">Skip to sign in</a>
     <header className="fuel-nav">
       <Link className="fuel-brand" to="/" aria-label="GymFuel home"><span className="fuel-brand__mark" aria-hidden="true">ϟ</span>GymFuel<span style={{ color: 'var(--fuel-blue)' }}>.</span></Link>
       <nav className="fuel-nav__right" aria-label="Account"><span>A little consistency. A lot of progress.</span><Link className="fuel-nav__link" to="/signup">Join GymFuel <span aria-hidden="true">↗</span></Link></nav>
@@ -51,12 +52,12 @@ export default function Login() {
           <div className="fuel-pillar"><Icon name="progress" /><span>Everyday progress</span></div>
         </div>
       </section>
-      <section aria-labelledby="signin-heading">
+      <section id="fuel-signin" aria-labelledby="signin-heading" tabIndex={-1}>
         <div className="fuel-form-card">
           <p className="fuel-form-kicker">YOUR NEXT CHAPTER STARTS HERE</p>
           <h2 id="signin-heading">Welcome back.</h2>
           <p className="fuel-form-subtitle">Ready to keep the momentum going?<br />Sign in to your GymFuel account.</p>
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleLogin} aria-busy={loading}>
             {error && <p role="alert" className="fuel-error">{typeof error === 'string' ? error : 'Unable to sign in. Please try again.'}</p>}
             <div className="fuel-field"><label htmlFor="fuel-email">Email address</label><input id="fuel-email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com" /></div>
             <div className="fuel-field"><label htmlFor="fuel-password">Password</label><div className="fuel-password"><input id="fuel-password" type={showPassword ? 'text' : 'password'} autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Enter your password" /><button type="button" aria-label={showPassword ? 'Hide password' : 'Show password'} aria-pressed={showPassword} onClick={() => setShowPassword(!showPassword)}><Icon name="eye" size={18} /></button></div></div>

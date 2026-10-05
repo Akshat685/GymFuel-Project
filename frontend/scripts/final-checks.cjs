@@ -1,0 +1,42 @@
+const { chromium, expect } = require('@playwright/test');
+const fs = require('node:fs');
+(async () => {
+  const browser = await chromium.launch({channel:'chrome'});
+  try {
+    const page = await browser.newPage({viewport:{width:390,height:844},hasTouch:true,isMobile:true});
+    const errors=[]; const warnings=[];
+    page.on('pageerror',e=>errors.push(e.message));
+    page.on('console',m=>{ if(m.type()==='error')errors.push(m.text()); if(m.type()==='warning')warnings.push(m.text()); });
+    await page.goto('http://127.0.0.1:3001');
+    await page.waitForSelector('[data-scene-state="ready"]');
+    await page.waitForTimeout(1000);
+    const canvas=page.locator('.fuel-canvas canvas');
+    const before=await canvas.screenshot();
+    const rect=await page.locator('.fuel-stage').boundingBox();
+    const session=await page.context().newCDPSession(page);
+    await session.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x:rect.x+100,y:rect.y+120}]});
+    for(let x=110;x<=230;x+=20) await session.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:rect.x+x,y:rect.y+120}]});
+    await session.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});
+    await page.waitForTimeout(600);
+    expect(before.equals(await canvas.screenshot())).toBe(false);
+    await page.keyboard.press('Tab');
+    await expect(page.getByText('Skip to sign in')).toBeFocused();
+    await page.keyboard.press('Enter');
+    await expect(page.locator('#fuel-signin')).toBeFocused();
+    expect(errors).toEqual([]); expect(warnings.filter(w=>/deprecated/i.test(w))).toEqual([]);
+    console.log('Production: touch drag, skip link, real WebGL rendering, zero errors and deprecations PASS.');
+    await page.goto('http://localhost:3000/?sceneDebug=1');
+    await page.waitForSelector('[data-scene-state="ready"]');
+    await page.waitForTimeout(1000);
+    await page.evaluate(()=>{Object.defineProperty(document,'hidden',{configurable:true,get:()=>true});document.dispatchEvent(new Event('visibilitychange'));});
+    await page.waitForTimeout(300);
+    const frames=await page.evaluate(()=>window.__fuelMetrics.frames);
+    await page.waitForTimeout(500);
+    expect(await page.evaluate(()=>window.__fuelMetrics.frames)).toBe(frames);
+    await page.evaluate(()=>{delete document.hidden;document.dispatchEvent(new Event('visibilitychange'));});
+    await page.waitForTimeout(500);
+    expect(await page.evaluate(()=>window.__fuelMetrics.frames)).toBeGreaterThan(frames);
+    console.log('Visibility change: render loop pauses while hidden and resumes PASS.');
+    fs.writeFileSync('verification/final-checks.json',JSON.stringify({productionErrors:errors,productionWarnings:warnings,touchDrag:true,skipLink:true,hiddenPauseResume:true},null,2));
+  } finally {await browser.close();}
+})().catch(e=>{console.error(e);process.exitCode=1;});

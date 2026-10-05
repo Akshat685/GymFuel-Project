@@ -46,7 +46,11 @@
     "eject": "react-scripts eject",
     "prestart": "node scripts/fiber-timer.cjs",
     "prebuild": "node scripts/fiber-timer.cjs",
-    "pretest": "node scripts/fiber-timer.cjs"
+    "pretest": "node scripts/fiber-timer.cjs",
+    "lint": "eslint src --ext .js,.jsx",
+    "lint:3d": "eslint src/Pages/Login.jsx src/components/fuel/FuelHero.jsx src/components/fuel/FuelScene.jsx src/App.test.js --max-warnings=0",
+    "verify:3d": "node scripts/verify-scene.cjs",
+    "preview": "node scripts/serve-build.cjs"
   },
   "eslintConfig": {
     "extends": [
