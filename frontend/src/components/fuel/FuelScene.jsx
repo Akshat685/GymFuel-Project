@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { CanvasTexture, MathUtils, Object3D, PMREMGenerator, SRGBColorSpace, Vector2 } from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { useGLTF } from '@react-three/drei/core/Gltf';
+import { PerformanceMonitor } from '@react-three/drei/core/PerformanceMonitor';
 import { useAnimations } from '@react-three/drei/core/useAnimations';
 
 // One-line asset swap: set a centered, ~2.8-unit tall optimized GLB URL here.
@@ -71,7 +72,7 @@ function Shaker() {
     <mesh position={[0, 1.37, .27]} rotation={[.08, 0, 0]}><cylinderGeometry args={[.23, .27, .15, 40]} /><meshStandardMaterial color="#223456" roughness={.3} metalness={.4} /></mesh>
     <mesh position={[0, 1.46, .27]}><cylinderGeometry args={[.245, .245, .05, 40]} /><meshStandardMaterial color="#aebed8" metalness={.85} roughness={.25} /></mesh>
     <mesh position={[0, 1.43, -.38]} rotation={[0, 0, 0]}><torusGeometry args={[.28, .064, 12, 40, Math.PI]} /><meshStandardMaterial color="#1b2941" roughness={.36} metalness={.4} /></mesh>
-    <mesh position={[0, -1.2, 0]}><torusGeometry args={[.58, .037, 12, 64]} /><meshStandardMaterial color="#1e3a8a" roughness={.4} metalness={.4} /></mesh>
+    <mesh position={[0, -1.2, 0]} rotation={[Math.PI / 2, 0, 0]}><torusGeometry args={[.58, .037, 12, 64]} /><meshStandardMaterial color="#1e3a8a" roughness={.4} metalness={.4} /></mesh>
   </>;
 }
 
@@ -97,9 +98,35 @@ function Lifecycle({ onReady, onFailure }) {
   return null;
 }
 
+function PerformanceProbe() {
+  const snapshot = useRef({ frames: 0, since: 0 });
+  useFrame(({ gl }) => {
+    if (!window.location.search.includes('sceneDebug=1')) return;
+    const now = performance.now();
+    const sample = snapshot.current;
+    if (!sample.since) sample.since = now;
+    sample.frames++;
+    window.__fuelMetrics = window.__fuelMetrics || { samples: [], frames: 0 };
+    window.__fuelMetrics.frames++;
+    if (now - sample.since >= 1000) {
+      window.__fuelMetrics.samples.push(Number((sample.frames * 1000 / (now - sample.since)).toFixed(1)));
+      window.__fuelMetrics.samples = window.__fuelMetrics.samples.slice(-60);
+      window.__fuelMetrics.drawCalls = gl.info.render.calls;
+      window.__fuelMetrics.triangles = gl.info.render.triangles;
+      window.__fuelMetrics.dpr = gl.getPixelRatio();
+      sample.since = now; sample.frames = 0;
+    }
+  });
+  return null;
+}
+
 export default function FuelScene({ active, motion, onReady, onFailure }) {
+  const mobile = window.matchMedia('(max-width: 700px), (pointer: coarse)').matches;
+  const [dpr, setDpr] = useState(mobile ? 1 : 1.25);
   return <div className="fuel-canvas" aria-hidden="true">
-    <Canvas frameloop={active ? 'always' : 'never'} dpr={[1, 1.5]} camera={{ position: [0, .3, 6.4], fov: 36 }} gl={{ alpha: true, antialias: true, powerPreference: 'low-power' }}>
+    <Canvas frameloop={active ? 'always' : 'never'} dpr={dpr} camera={{ position: [0, .3, 6.4], fov: 36 }} gl={{ alpha: true, antialias: false, powerPreference: 'low-power' }}>
+      <PerformanceMonitor bounds={() => [35, 55]} flipflops={2} onDecline={() => setDpr(1)} onIncline={() => setDpr(mobile ? 1.25 : 1.5)} onFallback={() => setDpr(1)} />
+      {process.env.NODE_ENV === 'development' && <PerformanceProbe />}
       <StudioLighting />
       <MotionRig motion={motion} active={active} />
       <Lifecycle onReady={onReady} onFailure={onFailure} />
@@ -132,4 +159,7 @@ function MotionRig({ motion, active }) {
     <group ref={model} rotation={[.1, -.25, -.22]} position={[0, -.08, 0]}>{MODEL_URL ? <ExternalModel active={active} /> : <Shaker />}</group>
   </>;
 }
+
+
+
 

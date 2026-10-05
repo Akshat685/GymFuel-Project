@@ -27,6 +27,7 @@ export default function FuelHero() {
   const [active, setActive] = useState(false);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [requested, setRequested] = useState(false);
   const [paused, setPaused] = useState(false);
   const onReady = useCallback(() => setReady(true), []);
   const onFailure = useCallback(() => setFailed(true), []);
@@ -56,6 +57,15 @@ export default function FuelHero() {
       window.removeEventListener('scroll', scroll);
     };
   }, []);
+  useEffect(() => {
+    if (!enabled || !active || requested) return;
+    if ('requestIdleCallback' in window) {
+      const handle = window.requestIdleCallback(() => setRequested(true), { timeout: 1200 });
+      return () => window.cancelIdleCallback(handle);
+    }
+    const handle = window.setTimeout(() => setRequested(true), 250);
+    return () => window.clearTimeout(handle);
+  }, [enabled, active, requested]);
   const live = enabled && !failed;
   const move = event => {
     if (paused || event.target.closest('button')) return;
@@ -81,7 +91,7 @@ export default function FuelHero() {
     <div className={`fuel-poster ${live && ready ? 'fuel-poster--hidden' : ''}`} aria-hidden="true">
       <div className="fuel-poster__bottle"><div className="fuel-poster__lid" /><span>GYM<br />FUEL<span className="fuel-poster__line" /></span></div>
     </div>
-    {live && <SceneBoundary onFailure={onFailure}><Suspense fallback={null}>
+    {live && requested && <SceneBoundary onFailure={onFailure}><Suspense fallback={null}>
       <FuelScene active={active && !paused} motion={motion} onReady={onReady} onFailure={onFailure} />
     </Suspense></SceneBoundary>}
     {live && ready && <div className="fuel-scene-controls" role="group" aria-label="Shaker view controls">
@@ -92,3 +102,4 @@ export default function FuelHero() {
     <div className="fuel-stage__caption"><span className="fuel-status-dot" />{live ? (ready ? 'BUILT FOR YOUR DAILY MOMENTUM' : 'PREPARING YOUR FUEL…') : 'SMALL HABITS. STRONGER EVERY DAY.'}</div>
   </div>;
 }
+

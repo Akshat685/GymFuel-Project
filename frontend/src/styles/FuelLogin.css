@@ -59,3 +59,14 @@
 .fuel-scene-controls button { width: 30px; height: 30px; border: 1px solid #dae3f1; background: #f8faffcc; color: #385380; border-radius: 50%; display: grid; place-items: center; font-size: 17px; padding: 0; }
 .fuel-scene-controls button:hover { background: #e0eaff; }
 .fuel-scene-controls button:disabled { opacity: .4; }
+@media (max-width: 700px) {
+  .fuel-editorial h1 { font-size: 42px; letter-spacing: -2.3px; }
+  .fuel-stage { height: 260px; }
+  .fuel-scene-controls { top: 5px; right: 0; gap: 2px; }
+  .fuel-scene-controls button { width: 44px; height: 44px; }
+}
+/* Keep the drawing buffer around the object, rather than rendering empty space. */
+.fuel-canvas { width: min(100%, 400px); left: 50%; right: auto; transform: translateX(-50%); }
+.fuel-login { font-weight: 400; }
+.fuel-skip { position: absolute; left: 20px; top: -60px; z-index: 10; padding: 10px 16px; background: white; border-radius: 6px; }
+.fuel-skip:focus { top: 12px; }
