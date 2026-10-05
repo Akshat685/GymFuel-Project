@@ -1,0 +1,22 @@
+[
+  {
+    "file": "build/static/js/191.eea2faed.chunk.js",
+    "bytes": 997837,
+    "gzipBytes": 257995
+  },
+  {
+    "file": "build/static/js/779.04323545.chunk.js",
+    "bytes": 6344,
+    "gzipBytes": 2527
+  },
+  {
+    "file": "build/static/js/main.9cd72f60.js",
+    "bytes": 693184,
+    "gzipBytes": 213526
+  },
+  {
+    "file": "build/fuel-studio.bin",
+    "bytes": 688128,
+    "gzipBytes": 112370
+  }
+]

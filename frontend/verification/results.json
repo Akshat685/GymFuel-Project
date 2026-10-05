@@ -1,0 +1,96 @@
+{
+  "url": "http://localhost:3000",
+  "renderer": "Chrome / hardware WebGL2",
+  "scenarios": {
+    "desktop": {
+      "metrics": {
+        "samples": [
+          54.6,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          60,
+          59
+        ],
+        "frames": 544,
+        "drawCalls": 10,
+        "triangles": 5120,
+        "dpr": 1
+      },
+      "cls": 0.0000017330970293209875,
+      "horizontalOverflow": false,
+      "canvasSize": {
+        "width": 400,
+        "height": 340
+      }
+    },
+    "mobile": {
+      "metrics": {
+        "samples": [
+          58.4,
+          60,
+          59.9,
+          60.1,
+          60,
+          60,
+          60,
+          60,
+          60
+        ],
+        "frames": 551,
+        "drawCalls": 10,
+        "triangles": 5120,
+        "dpr": 1
+      },
+      "cls": 0.000011647980224256028,
+      "horizontalOverflow": false,
+      "canvasSize": {
+        "width": 342,
+        "height": 260
+      },
+      "offscreenPaused": true
+    },
+    "reduced-motion": {
+      "poster": true,
+      "canvasCount": 0
+    },
+    "save-data": {
+      "poster": true,
+      "canvasCount": 0
+    },
+    "low-end": {
+      "poster": true,
+      "canvasCount": 0
+    },
+    "throttled": {
+      "cpu": "4x slowdown",
+      "network": "1.6 Mbps / 150 ms",
+      "metrics": {
+        "samples": [
+          28.6,
+          60,
+          60,
+          60.1,
+          60,
+          60,
+          60
+        ],
+        "frames": 424,
+        "drawCalls": 10,
+        "triangles": 5120,
+        "dpr": 1.25
+      }
+    },
+    "contextLoss": {
+      "poster": true
+    },
+    "webglDisabled": {
+      "poster": true
+    }
+  },
+  "errors": [],
+  "warnings": []
+}
